@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>D3: Time Scales</title>
+
+  <script src="/js/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+  <h1>Flights per day: Time Scales</h1>
+  <p>The most popular destination airports for flights out of New York in 2013</p>
+  <p><a href="/">Back to index</a></p>
+  <main id="container"></main>
+
+  <script lang="text/javascript" type="module">
+    const flightData = [
+      { year: 2013, month: 1, day: 1, count: 842 },
+      { year: 2013, month: 1, day: 2, count: 943 },
+      { year: 2013, month: 1, day: 3, count: 914 },
+      { year: 2013, month: 1, day: 4, count: 915 },
+      { year: 2013, month: 1, day: 5, count: 720 },
+      { year: 2013, month: 1, day: 6, count: 832 },
+      { year: 2013, month: 1, day: 7, count: 933 },
+      { year: 2013, month: 1, day: 8, count: 899 },
+      { year: 2013, month: 1, day: 9, count: 902 },
+      { year: 2013, month: 1, day: 10, count: 932 },
+      { year: 2013, month: 1, day: 11, count: 930 },
+      { year: 2013, month: 1, day: 12, count: 690 },
+      { year: 2013, month: 1, day: 13, count: 828 },
+      { year: 2013, month: 1, day: 14, count: 928 },
+      { year: 2013, month: 1, day: 15, count: 894 },
+      { year: 2013, month: 1, day: 16, count: 901 },
+      { year: 2013, month: 1, day: 17, count: 927 },
+      { year: 2013, month: 1, day: 18, count: 924 },
+      { year: 2013, month: 1, day: 19, count: 674 },
+      { year: 2013, month: 1, day: 20, count: 786 },
+      { year: 2013, month: 1, day: 21, count: 912 },
+      { year: 2013, month: 1, day: 22, count: 890 },
+      { year: 2013, month: 1, day: 23, count: 897 },
+      { year: 2013, month: 1, day: 24, count: 925 },
+      { year: 2013, month: 1, day: 25, count: 922 },
+      { year: 2013, month: 1, day: 26, count: 680 },
+      { year: 2013, month: 1, day: 27, count: 823 },
+      { year: 2013, month: 1, day: 28, count: 923 },
+      { year: 2013, month: 1, day: 29, count: 890 },
+      { year: 2013, month: 1, day: 30, count: 900 },
+      { year: 2013, month: 1, day: 31, count: 928 }
+    ]
+
+    // useful setup variables
+    const monthLength = 31;
+
+    const vizWidth = 800;
+    const vizHeight = 500;
+    const margin = 40;
+
+    const barSpacing = 2;
+    const barWidth = ((vizWidth - 2 * margin) / monthLength) - barSpacing;
+
+    const lastFlightIndex = flightData.length - 1
+
+    // setup SVG
+    const svg = d3.select("#container")
+      .append('svg')
+      .attr('width', vizWidth)
+      .attr('height', vizHeight)
+
+    // setup Scales
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(flightData, d => d.count)])
+      .range([vizHeight - margin * 2, 0])
+      .nice()
+
+    const dateForDayData = (d) => new Date(d.year, d.month - 1, d.day)
+
+    const xScale = d3.scaleTime()
+      .domain([dateForDayData(flightData[0]), dateForDayData(flightData[flightData.length - 1])])
+      .range([0, flightData.length * (barWidth + barSpacing)])
+      .nice()
+
+    // draw Graph
+    const rectGroup = svg.append("g")
+      .attr("transform", `translate(${margin},${margin})`)
+
+    rectGroup.selectAll("rect")
+      .data(flightData)
+      .join("rect")
+      .attr("x", (d, i) => xScale(dateForDayData(d)))
+      .attr("y", (d, i) => yScale(d.count))
+      .attr("width", barWidth)
+      .attr("height", (d, i) => yScale(0) - yScale(d.count))
+      .attr("fill", "#f00")
+
+
+    // draw Axes
+    const yAxisGroup = svg.append("g")
+      .attr("transform", `translate(${margin}, ${margin})`)
+      .call(d3.axisLeft(yScale))
+      // .call()
+
+    const xAxisGroup = svg.append("g")
+      .attr("transform", `translate(${margin}, ${vizHeight - margin})`)
+      .call(d3.axisBottom(xScale)
+
+      )
+
+  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+  </style>
+
+</body>
+
+</html>

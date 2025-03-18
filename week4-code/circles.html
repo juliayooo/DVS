@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>D3 Demo</title>
+
+  <script src="/js/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+  <h1>Most Popular Destinations: Blobs</h1>
+  <p>The most popular destination airports for flights out of New York in 2013</p>
+  <main id="container"></main>
+
+  <script lang="text/javascript" type="module">
+    const flightData = [
+      ["ORD", 17283],
+      ["ATL", 17215],
+      ["LAX", 16174],
+      ["BOS", 15508],
+      ["MCO", 14082],
+      ["CLT", 14064],
+      ["SFO", 13331],
+      ["FLL", 12055],
+      ["MIA", 11728],
+      ["DCA", 9705],
+      ["DTW", 9384],
+      ["DFW", 8738],
+      ["RDU", 8163],
+      ["TPA", 7466],
+      ["DEN", 7266],
+      ["IAH", 7198],
+      ["MSP", 7185],
+      ["PBI", 6554],
+      ["BNA", 6333],
+      ["LAS", 5997],
+    ]
+
+    // let's make a simple set of blobs for our data;
+    // circles where size corresponds to number of flights
+
+    // 1) make an SVG container to hang things off
+    //    select the container element, append an SVG element.
+
+    // Tip: You'll want some parameters:
+
+    const vizWidth = 1000;
+    const vizHeight = 300;
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", vizWidth)
+      .attr("height", vizHeight)
+
+    
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, d3.max(flightData, d => d[1])])
+      .range([0, 20])
+
+
+    // 2) draw a circle for each data element:
+    // - select our circle elements within svg
+    // - BIND data to that selection
+    // - define a JOIN for that selection
+    // - define properties on the selection
+    //
+    // to do this, we will need to calculate X,Y,R, and use SCALES
+
+
+    svg.selectAll("circle")
+      .data(flightData)
+      .join("circle")
+      .attr("cx", (d, i) => 25 + (i * 50))
+      .attr("cy", vizHeight / 2)
+      .attr("r", d => d[1] / 400)
+      .attr("r", (d , i)=> radiusScale(d[1]))
+      // .range(0, 20)
+      
+
+    // 3) Label every circle
+
+    svg.selectAll("text")
+      .data(flightData)
+      .join("text")
+      .attr("x", (d, i) => 25 + (i * 50))
+      .attr("y", 50 + (vizHeight / 2))
+      .attr("text-anchor", "middle")
+      .text(d => d[0])
+
+    // 4) Scale: maybe it shouldn't be linear?
+
+  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+  </style>
+
+</body>
+
+</html>

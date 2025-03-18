@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>D3: Bar Graph Demo</title>
+
+  <script src="/js/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+  <h1>Most Popular Destinations: Adding axes to a bar graph</h1>
+  <p>The most popular destination airports for flights out of New York in 2013</p>
+  <p><a href="/">Back to index</a></p>
+  <main id="container"></main>
+
+  <script lang="text/javascript" type="module">
+    const flightData = [
+      ["ORD", 17283],
+      ["ATL", 17215],
+      ["LAX", 16174],
+      ["BOS", 15508],
+      ["MCO", 14082],
+      ["CLT", 14064],
+      ["SFO", 13331],
+      ["FLL", 12055],
+      ["MIA", 11728],
+      ["DCA", 9705],
+      ["DTW", 9384],
+      ["DFW", 8738],
+      ["RDU", 8163],
+      ["TPA", 7466],
+      ["DEN", 7266],
+      ["IAH", 7198],
+      ["MSP", 7185],
+      ["PBI", 6554],
+      ["BNA", 6333],
+      ["LAS", 5997],
+    ]
+
+    // useful setup variables
+    const vizWidth = 800;
+    const vizHeight = 500;
+    const margin = 40;
+
+    const barSpacing = 2;
+    const barWidth = ((vizWidth - margin * 2) / flightData.length) - barSpacing;
+
+    // setup SVG
+    const svg = d3.select("#container")
+      .append('svg')
+      .attr('width', vizWidth)
+      .attr('height', vizHeight);
+
+    // setup Scales
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(flightData, d => d[1])])
+      .range([vizHeight - margin * 2, 0]);
+
+    // draw graph
+    const rectGroup = svg.append("g")
+      .attr("transform", `translate(${margin},${margin})`);
+
+    rectGroup.selectAll("rect")
+      .data(flightData)
+      .join("rect")
+      .attr("x", (d, i) => i * (barWidth + barSpacing))
+      .attr("y", (d, i) => yScale(d[1]))
+      .attr("width", barWidth)
+      .attr("height", (d, i) => yScale(0) - yScale(d[1]))
+      .attr("fill", "#f00");
+
+    const labelGroup = svg.append("g")
+      .attr("transform", `translate(${margin},${margin})`);
+
+    labelGroup.selectAll("text")
+      .data(flightData)
+      .join("text")
+      .attr("x", (d, i) => barWidth / 2 + i * (barWidth + barSpacing))
+      .attr("y", (d, i) => yScale(d[1]) + 14)
+      .attr("fill", "#fff")
+      .attr("text-anchor", "middle")
+      .text((d, i) => d[0])
+      .style("font-weight", "bold")
+      .style("font-size", "12px")
+
+    const axisY = svg.append("g")
+      .attr("transform", `translate(${margin}, ${margin})`)
+      .call(d3.axisLeft(yScale.nice()));
+  </script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+  </style>
+
+</body>
+
+</html>

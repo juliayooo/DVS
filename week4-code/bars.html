@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>D3 Demo</title>
+
+  <script src="/js/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+  <h1>Most Popular Destinations: Bar Graph</h1>
+  <p>The most popular destination airports for flights out of New York in 2013</p>
+  <main id="container"></main>
+
+  <script lang="text/javascript" type="module">
+    const flightData = [
+      ["ORD", 17283],
+      ["ATL", 17215],
+      ["LAX", 16174],
+      ["BOS", 15508],
+      ["MCO", 14082],
+      ["CLT", 14064],
+      ["SFO", 13331],
+      ["FLL", 12055],
+      ["MIA", 11728],
+      ["DCA", 9705],
+      ["DTW", 9384],
+      ["DFW", 8738],
+      ["RDU", 8163],
+      ["TPA", 7466],
+      ["DEN", 7266],
+      ["IAH", 7198],
+      ["MSP", 7185],
+      ["PBI", 6554],
+      ["BNA", 6333],
+      ["LAS", 5997],
+    ]
+
+    // Class Workshop: you're going to build the
+    // bar-graph equivalent of the blobchart we made.
+
+    // 1: Make an SVG element inside #container for everything to be drawn in.
+    //    You'll probably want some variables to describe the width/height of the
+    //    visualisation
+
+    const vizWidth = 1100;
+    const vizHeight = 300;
+
+    const svg = d3.selectAll("#container")
+      .append("svg")
+      .attr("width", vizWidth)
+      .attr("height", vizHeight)
+
+
+
+const heightScale = d3.scaleLinear()
+  .domain([0, d3.max(flightData, d => d[1])])
+
+  .range([0,100])
+    // 2: Draw a rectangle for every item in `data`.
+    //    This is not easy. Let's break it down step by step.
+    //    a) make a new group element to keep your rects tidy
+    //    b) make a SELECTION: every <rect> in that group. (Of which there are none)
+    //    c) bind `data` to that selection
+    //    d) on `join`, make a new rect for every item in the selection
+    //    e) set the attributes for those rects according to the data
+    //       to do this, you'll need to work out the x,y,width,height attributes.
+    //       To begin with, don't worry about things being upside down.
+    //       Start by hardcoding values, and then replace them, one at once:
+    //
+    //       x can be based on the index of the array in the list
+    //       y can be based on the second item in each array - try 0 to begin with, though
+    //       width will be the same for every rect - you could hardcode, or calculate
+    //       height will be based on the second item in each array
+    //
+    //       When it comes time to calculate y / height, you will want to make a linear scale.
+      
+    // a 
+    // const flightsPop = d3.group(flightData, (d) => d.popularity)
+    // console.log(flightsPop);
+
+
+    // b, c, d, e
+    // svg.selectAll("rect")
+    //   .data(flightData)
+    //   .join("rect")
+    //   .attr("x", (d, i) => 25 + (i * 50))
+  
+    //   .attr("width", 30)
+    //   // .attr("height", (d, i) => d[1] / 50)
+    //   .attr("height", (d , i) => heightScale(d[1]) * 2)
+
+
+
+
+    // 3: improve your visualisation: if you've got an upside-down bar graph, can you draw it
+    //    right way up? (SVG doesn't like negative height attributes, sadly!)
+    //
+
+    svg.selectAll("rect")
+      .data(flightData)
+      .join("rect")
+      .attr("x", (d, i) => 25 + (i * 50))
+      .attr("y", 0)
+      .attr("width", 30)
+      // .attr("height", (d, i) => d[1] / 50)
+      .attr("height", (d , i) => heightScale(d[1]) * 2)
+      .attr("y", (d , i) => vizHeight - heightScale(d[1]) * 2)
+
+
+
+    // *** STRETCH GOALS ***
+    ///
+    // A: Add a label for each element of data: the destination airport code, somewhere
+    //    on the bar. Use a <text> element.
+
+    svg.selectAll("text")
+      .data(flightData)
+      .join("text")
+      .attr("x", (d,i) => 25 + (i*50))
+      .attr("y", (d , i) => vizHeight - heightScale(d[1]) * 2 - 10)
+      .text(d => d[0])
+
+
+    // B: Add another <text> element for each element of data. It should have the
+    //    the numerical value in it. Place it somewhere on the bar.
+
+    // svg.selectAll("text1")
+    //   .data(flightData)
+    //   .join("text1")
+    //   .attr("x", (d,i) => 25 + (i*50))
+    //   .attr("y", (d , i) => vizHeight - heightScale(d[1]) * 2 - 20)
+    //   .text(d => d[1])
+
+      
+    // C: Color the bars somehow.
+    // D: ADVANCED: add a Y axis.
+    //    https://www.oliviavane.co.uk/tutorials/d3/axes/tutorial-axes will help.
+    //    You might need some padding.
+    //    (We will look at axes in depth next week).
+
+  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+  </style>
+
+</body>
+
+</html>
