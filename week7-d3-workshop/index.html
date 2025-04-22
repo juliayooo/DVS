@@ -4,16 +4,58 @@
 <head>
   <title>D3: Geo Workshop</title>
 
-  <script src="/js/d3.v7.min.js"></script>
+  <script src="./js/d3.v7.min.js"></script>
 </head>
 
 <body>
   <h1>D3 MapsWorkshop</h1>
   <main id="container"></main>
-  <div id="#country"></div>
+  <div id="country"></div>
 
   <script lang="text/javascript" type="module">
+
+
+    const vizWidth = 1000;
+    const vizHeight = 500;
+    const svg = d3
+    .select("#container")
+    .append("svg")
+    .attr("width", vizWidth)
+    .attr("height", vizHeight);
+
+    const map = svg.append("g");
+
+    const projection = d3.geoEquirectangular();
+    const pathGenerator = d3.geoPath(projection);
+
+    fetch("./data/countries.geojson").then((response) => { 
+      response.json().then(countries => {
+
+          
+    
+        map.selectAll("path")
+        .data(countries.features)
+        .join("path")
+        .attr("d", pathGenerator)
+        .attr("fill", "lightblue")
+        .attr("stroke", "white")
+        .on('mouseover', (event, datum) => {
+         document.getElementById("country").innerText = datum.properties.ADMIN;
+         d3.select(event.currentTarget)
+          .attr("fill", "orange")
+          .attr("stroke", "black")
+        })
+        .on('mouseout', (event, datum) => {
+          document.getElementById("country").innerText = "";
+          d3.select(event.currentTarget)
+          .attr("fill", "lightblue")
+          .attr("stroke", "white")
+        })
+      })
+
+      })
     // draw some countries
+
     //
     // data/countries.geojson from Natural Earth:
     // https://www.naturalearthdata.com/downloads/50m-cultural-vectors/

@@ -20,7 +20,17 @@
       height: 800px;
     }
   </style>
-
+<link rel=
+"stylesheet" href=
+"./lib/leaflet-marker-cluster/MarkerCluster.css" />
+<link
+rel=
+"stylesheet"
+href=
+"./lib/leaflet-marker-cluster/MarkerCluster.Default.css"
+/>
+<script src=
+"./lib/leaflet-marker-cluster/leaflet.markercluster.js"></script>
 </head>
 
 <body>
@@ -38,21 +48,27 @@
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(map);
 
-      map.setView([51.4739, -0.08013], 17);
+      map.setView([0,0], 3);
 
-      const marker = L.marker([51.4723718881289, -0.08614718914031984]).addTo(map);
-      marker.bindPopup("Greencoat Building").openPopup();
-
-      const prll = [
-      { lat: 51.473791983443675, lng: -0.0812119245529175 },
-      { lat: 51.47456716976322, lng: -0.0813567638397217 },
-      { lat: 51.47490463900214, lng: -0.07923245429992677 },
-      { lat: 51.47411943444423, lng: -0.07908225059509279 },
-      ];
-
-    const polygon = L.polygon(prll).addTo(map);
-    const prmarker = L.marker([51.473791983443675,-0.0812119245529175]).addTo(map);
-    polygon.bindPopup("Peckham Road").openPopup();
+      fetch("./data/meteorites.json").then((response) => {
+        // data is your Response object
+        response.json().then((meteorites) => {
+          const clusterGroup = L.markerClusterGroup();
+          meteorites.forEach(m => {
+            clusterGroup.addLayer(L.marker([m.reclat, m.reclong]).bindPopup(m.name));
+            // L.circleMarker([m.reclat, m.reclong]).bindPopup(m.name).addTo(map);
+          })
+          
+          map.addLayer(clusterGroup);
+   
+        // geoJson is a Javascript object corresponding
+        // to the json in the file
+        //
+        // do something with that JSON data!
+        });
+      });
+   
+       
             
     // *** All your JS code should go here. ***
     //

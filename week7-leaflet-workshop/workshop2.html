@@ -40,19 +40,27 @@
 
       map.setView([51.4739, -0.08013], 17);
 
-      const marker = L.marker([51.4723718881289, -0.08614718914031984]).addTo(map);
-      marker.bindPopup("Greencoat Building").openPopup();
+      fetch("./data/cci.geojson").then((data) => {
+        // data is your Response object
+        data.json().then((geojson) => {
 
-      const prll = [
-      { lat: 51.473791983443675, lng: -0.0812119245529175 },
-      { lat: 51.47456716976322, lng: -0.0813567638397217 },
-      { lat: 51.47490463900214, lng: -0.07923245429992677 },
-      { lat: 51.47411943444423, lng: -0.07908225059509279 },
-      ];
+            L.geoJSON(geojson).addTo(map);
 
-    const polygon = L.polygon(prll).addTo(map);
-    const prmarker = L.marker([51.473791983443675,-0.0812119245529175]).addTo(map);
-    polygon.bindPopup("Peckham Road").openPopup();
+            L.geoJSON(geojson, { onEachFeature: (feature, layer) => {
+                console.log(feature.properties.name);
+                console.log(layer);
+        layer.bindPopup("<h2>" + feature.properties.name + "</h2>"+  "<br>" + feature.properties.desc).addTo(map);
+        layer.openPopup();
+        }}).addTo(map).openPopup();
+        
+        // geoJson is a Javascript object corresponding
+        // to the json in the file
+        //
+        // do something with that JSON data!
+        });
+        });
+
+       
             
     // *** All your JS code should go here. ***
     //
