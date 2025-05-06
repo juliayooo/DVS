@@ -50,11 +50,11 @@
   <div id="controls">
     <div class="left">
       <label for="startyear">Start year:</label>
-      <input id="startyear" value=300 />
+      <input id="startyear" value=300 min="300" max="2025" type="range"/>
       <span id="startyear-number"></span>
 
       <label for="startyear">End year:</label>
-      <input id="endyear" value=2025 />
+      <input id="endyear" value=2025 min="300" max="2025" type="range"/>
       <span id="endyear-number"></span>
     </div>
     <div class="right">
@@ -64,6 +64,43 @@
   </div>
 
   <script lang="text/javascript">
+
+
+    // reset button functionality 
+    const reset = document.getElementById("reset");
+    reset.addEventListener("click", (e) => {
+      map.setView([0, 0], 2);
+
+    });
+
+
+    // find me button functionality 
+    const findme = document.getElementById("findme");
+    findme.addEventListener("click", (e) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const long = position.coords.longitude;
+        map.setView([lat, long], 13);
+      });
+    });
+
+
+    // start year input functionality
+    const startyear = document.getElementById("startyear");
+    startyear.addEventListener("input", (e) => {
+      console.log("changed to " + e.target.value);
+      startYear = parseInt(e.target.value);
+      drawMeteorites(e.target.value, endYear);
+    });
+     // end year input functionality
+     const endyear = document.getElementById("endyear");
+    endyear.addEventListener("input", (e) => {
+      endYear = parseInt(e.target.value);
+      console.log("end changed to " + e.target.value);
+      drawMeteorites(startyear, e.target.value);
+
+    });
+
     // global variables
     let map;
     let markerLayer;
@@ -90,11 +127,47 @@
       let filteredMeteorites = allMeteorites;
 
       // filter by from/to years
+      
       if (from) {
-        // TODO: filteredMeteorites should begin at FROM year
-      }
 
+        // for (let i = allMeteorites.length; i >= 0; i--) {
+        //   if (filteredMeteorites[i]["year"] < from) {
+        //     filteredMeteorites.splice(i, 1);
+        //   }
+        // }       
+        //  console.log(filteredMeteorites.length);
+
+        filteredMeteorites = allMeteorites.filter((m) => {
+          return m.year >= startYear;
+        });
+      //   filteredMeteorites = [];
+      //   allMeteorites.forEach((meteorite)=>{
+      //     if (meteorite.year >= from) {
+      //       filteredMeteorites.push(meteorite);
+      //     }
+      // });
+      }
+        // TODO: filteredMeteorites should begin at FROM year
+      
       if (to) {
+
+        filteredMeteorites = filteredMeteorites.filter((m) => {
+          return m.year <= endYear;
+        });
+        // for (let i = filteredMeteorites.length; i >= 0; i--) {
+        //   if (filteredMeteorites[i]["year"] > to) {
+        //     filteredMeteorites.splice(i, 1);
+        //   }
+        // }
+        // console.log(filteredMeteorites.length);
+
+
+
+      //   allMeteorites.forEach((meteorite)=>{
+      //     if (meteorite.year <= to) {
+      //       filteredMeteorites.push(meteorite);
+      //     }
+      // });
         // TODO: filteredMeteorites should end at TO year
       }
 
@@ -136,6 +209,7 @@
       response.json().then((data) => {
         allMeteorites = data;
         drawMeteorites(startYear, endYear);
+        console.log(allMeteorites);
       });
     });
 
