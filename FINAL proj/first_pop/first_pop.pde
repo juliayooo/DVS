@@ -5,9 +5,9 @@ class ImCount {
   int year;
   String destinationCountry;
   String originCountry;
-  String count;
+  int count;
 
-  ImCount(int year, String dest, String origin, String count) {
+  ImCount(int year, String dest, String origin, int count) {
     this.year = year;
     this.destinationCountry = dest;
     this.originCountry = origin;
@@ -56,10 +56,11 @@ void loadYearData(Table table, String yearStr) {
     // skip empty rows
     if (row.getString(yearStr).equals("")) continue;
 
-    String count = row.getString(yearStr);
+    int count = int(row.getString(yearStr));
     
     //removeable eventually 
     int year = int(yearStr); 
+    
 
     ImCount mf = new ImCount(year, dest, origin, count);
     migrations.add(mf);
