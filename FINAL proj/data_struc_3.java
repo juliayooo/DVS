@@ -1,6 +1,4 @@
 import controlP5.*;
-ControlP5 cp5;
-// https://forum.processing.org/one/topic/help-with-drop-down-menu.html
 class ImCount {
   int year;
   String destinationCountry;
@@ -31,18 +29,24 @@ void setup() {
     
   }
   
-  size(500, 500);
-  cp5 = new ControlP5(this);
- 
-  // add a dropdownlist at position (100,100)
-  DropdownList droplist = cp5.addDropdownList("region_select").setPosition(10, 10);
-  
-  for(int i = 0; i < 8; i++){
-      droplist.addItem(regions.get(i), regions.get(i));
-      println("added " + regions.get(i));
-  }
- 
- 
+
+if (migrations.size() > 0) {
+  ImCount m0 = migrations.get(0);
+  println("First migration:");
+  println("  Year: " + m0.year);
+  println("  Destination: " + m0.destinationCountry);
+  println("  Origin: " + m0.originCountry);
+    println("  count: " + m0.count);
+    
+    ImCount m7 = migrations.get(9001);
+  println("First migration:");
+  println("  Year: " + m7.year);
+  println("  Destination: " + m7.destinationCountry);
+  println("  Origin: " + m7.originCountry);
+    println("  count: " + m7.count);
+  println(migrations.size());
+
+}
 }
 
 // This function extracts data for a specific year column
@@ -66,7 +70,7 @@ void loadYearData(Table table, String yearStr) {
     
     if(!regions.contains(dest)){
       regions.add(dest);
-      //println("added " + dest);
+      println("added " + dest);
     }
   }
 }
