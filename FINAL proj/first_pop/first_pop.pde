@@ -24,7 +24,7 @@ void setup() {
   // then repeat every year until 2020 
   for(int i = 1990; i < 2025; i+=5){
     String yearStr = Integer.toString(i);  
-
+  println(yearStr);
   loadYearData(table, yearStr); 
 
   println("Loaded " + migrations.size() + " data rows.");
@@ -43,6 +43,8 @@ void setup() {
   }
  
  
+ //printYearData(2000);
+ println(migrations.get(0).count);
 }
 
 // This function extracts data for a specific year column
@@ -56,8 +58,11 @@ void loadYearData(Table table, String yearStr) {
     // skip empty rows
     if (row.getString(yearStr).equals("")) continue;
 
+
+    //THIS LINE IS BROKEN 
     int count = int(row.getString(yearStr));
-    
+    println(row.getString(yearStr));
+    println(count);
     //removeable eventually 
     int year = int(yearStr); 
     
@@ -70,4 +75,22 @@ void loadYearData(Table table, String yearStr) {
       //println("added " + dest);
     }
   }
+}
+
+void printYearData(int year){
+  for(int i=0; i < migrations.size(); i++){
+    
+    println(i);
+    //UNFINISHED
+    if(migrations.get(i).year == year){
+      println(migrations.get(i).count);
+      println(migrations.get(i).originCountry);
+      println(migrations.get(i).destinationCountry);
+
+    }
+  
+  
+  }
+  
+  
 }
