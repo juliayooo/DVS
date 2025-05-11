@@ -15,8 +15,15 @@ class ImCount {
   }
 }
 
+// global variables 
+Slider yearSlider;
+DropdownList originDropdown;
+DropdownList destDropdown;
+int selectedYear = 2000;
 ArrayList<ImCount> migrations = new ArrayList<ImCount>();
 ArrayList<String> regions = new ArrayList<String>();
+ArrayList<String> origins = new ArrayList<String>();
+
 void setup() {
   Table table = loadTable("data_edited1.csv", "header");
   
@@ -24,29 +31,46 @@ void setup() {
   // then repeat every year until 2020 
   for(int i = 1990; i < 2025; i+=5){
     String yearStr = Integer.toString(i);  
-  println(yearStr);
   loadYearData(table, yearStr); 
 
-  println("Loaded " + migrations.size() + " data rows.");
     
   }
   
-  size(500, 500);
+  size(1000, 1000);
   cp5 = new ControlP5(this);
  
-  // add a dropdownlist at position (100,100)
-  DropdownList droplist = cp5.addDropdownList("region_select").setPosition(10, 10);
-  
-  for(int i = 0; i < 8; i++){
-      droplist.addItem(regions.get(i), regions.get(i));
-      println("added " + regions.get(i));
-  }
- 
- 
- //printYearData(2000);
- println(migrations.get(0).count);
-}
+  // initialize dropdowns with lists 
+  destDropdown = cp5.addDropdownList("region_select").setPosition(100, 100);
+  originDropdown = cp5.addDropdownList("origin_select").setPosition(500, 100);
+  originDropdown.setHeight(200);
+  destDropdown.setItemHeight(20);
+  destDropdown.setBarHeight(20);
+  destDropdown.setHeight(200);
+    destDropdown.setWidth(300);
 
+
+  
+  // initialize year slider 
+  yearSlider = cp5.addSlider("Year")
+  .setPosition(100, 500)
+  .setSize(200, 20)
+  .setRange(1990, 2020)
+  .setNumberOfTickMarks(7)  // 1990, 1995, ..., 2020
+  .setValue(selectedYear)
+  .setSliderMode(Slider.FLEXIBLE);
+
+
+  for(int i = 0; i < 8; i++){
+      destDropdown.addItem(regions.get(i), regions.get(i));
+  }
+  for(int i = 0; i < origins.size(); i++){
+      originDropdown.addItem(origins.get(i), origins.get(i));
+  }
+
+}
+void draw() {
+  background(255);
+}
 // This function extracts data for a specific year column
 
 void loadYearData(Table table, String yearStr) {
@@ -59,10 +83,8 @@ void loadYearData(Table table, String yearStr) {
     if (row.getString(yearStr).equals("")) continue;
 
 
-    //THIS LINE IS BROKEN 
-    int count = int(row.getString(yearStr));
-    println(row.getString(yearStr));
-    println(count);
+    int count = int(row.getString(yearStr).replace(" ", ""));
+ 
     //removeable eventually 
     int year = int(yearStr); 
     
@@ -72,7 +94,9 @@ void loadYearData(Table table, String yearStr) {
     
     if(!regions.contains(dest)){
       regions.add(dest);
-      //println("added " + dest);
+    }
+    if(!origins.contains(origin)){
+      origins.add(origin);
     }
   }
 }
@@ -80,7 +104,6 @@ void loadYearData(Table table, String yearStr) {
 void printYearData(int year){
   for(int i=0; i < migrations.size(); i++){
     
-    println(i);
     //UNFINISHED
     if(migrations.get(i).year == year){
       println(migrations.get(i).count);
