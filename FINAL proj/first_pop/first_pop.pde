@@ -2,7 +2,6 @@ import controlP5.*;
 ControlP5 cp5;
 ParticleSystem ps;
 PImage sprite;
-
 // define class for imcount structure 
 class ImCount {
   int year;
@@ -93,11 +92,10 @@ void draw() {
   
   ps.setEmitter(mouseX,mouseY);
   
-  set_ps(selectedYear, "Sub-Saharan Africa", "Canada");
-
-  // set_ps(selectedYear, destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText());
-  ps.update();
-  ps.display();
+  // set_ps(selectedYear, "Sub-Saharan Africa", "Canada");
+  set_ps(selectedYear, destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText());
+  // ps.update();
+  // ps.display();
 
   fill(255);
   textSize(16);
@@ -155,13 +153,9 @@ void printYearData(int year){
 void set_ps(int year, String dest, String org){
   float n = 0;
 
-  // println("year: " + year + " dest: " + dest + " org: " + org);
   for(int i=0; i < migrations.size(); i++){
 
-    // println(migrations.get(i).count);
-    //   println(migrations.get(i).originCountry);
-    //   println(migrations.get(i).destinationCountry);
-
+  
     //Get specific migration data
     if(migrations.get(i).year == year && migrations.get(i).destinationCountry.equals(dest) && migrations.get(i).originCountry.equals(org)){
 
@@ -175,8 +169,8 @@ void set_ps(int year, String dest, String org){
       println(migrations.get(i).originCountry);
       println(migrations.get(i).destinationCountry);
 
-      n = migrations.get(i).count / 10000;
-      if(n > 100){
+      n = (migrations.get(i).count) / 1000;
+      if(n < 100){
         n = 100;
       }
       text("count: " + Float.toString(n), 10, 40);
@@ -188,6 +182,9 @@ println("done");
   // set the number of particles based on the count
   ps.reset();
   ps.addParticles(int(n));
+  ps.setEmitter(mouseX, mouseY);
+  ps.update();
+  ps.display();
  
 
 }

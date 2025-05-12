@@ -2,7 +2,8 @@ class Particle {
 
   PVector velocity;
   float lifespan = 255;
-  
+  // PVector location;
+
   PShape part;
   float partSize;
   
