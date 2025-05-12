@@ -26,7 +26,23 @@ class ParticleSystem {
         p.rebirth(x, y);
       }
     }
+  //   for (Particle p : particles) {
+  //   p.setEmitterPosition(x, y);
+  // }
   }
+
+  void addParticles(int n) {
+    for (int i = 0; i < n; i++) {
+      particles.add(new Particle());
+    }
+  }
+
+
+  //helper func to clear particles
+  void reset() {
+  particles.clear();
+  }
+
 
   void display() {
 

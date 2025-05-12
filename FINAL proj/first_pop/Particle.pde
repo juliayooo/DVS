@@ -29,6 +29,13 @@ class Particle {
   PShape getShape() {
     return part;
   }
+
+//   float emitterX, emitterY;
+
+// void setEmitterPosition(float x, float y) {
+//   this.emitterX = x;
+//   this.emitterY = y;
+// }
   
   void rebirth(float x, float y) {
     float a = random(TWO_PI);

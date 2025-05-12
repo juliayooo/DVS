@@ -6,8 +6,10 @@ PImage sprite;
 void setup() {
   size(1024, 768, P2D);
   orientation(LANDSCAPE);
+  
+  // customizable image here 
   sprite = loadImage("sprite.png");
-  ps = new ParticleSystem(90);
+  ps = new ParticleSystem(500);
 
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
