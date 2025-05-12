@@ -46,7 +46,11 @@ void setup() {
   
   // customizable image here 
   sprite = loadImage("sprite.png");
-  ps = new ParticleSystem(100);
+   //BROKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ps = new ParticleSystem(set_ps(selectedYear, "Sub-Saharan Africa", "Canada"));
+  println("created systmem with count" + set_ps(selectedYear, "Sub-Saharan Africa", "Canada"));
+  // ps = new ParticleSystem(100);
   hint(DISABLE_DEPTH_MASK);
     
     
@@ -56,6 +60,8 @@ void setup() {
   // initialize dropdowns with lists 
   destDropdown = cp5.addDropdownList("region_select").setPosition(100, 100);
   originDropdown = cp5.addDropdownList("origin_select").setPosition(500, 100);
+
+   
 
   destDropdown.setItemHeight(20);
   destDropdown.setBarHeight(20);
@@ -93,9 +99,9 @@ void draw() {
   ps.setEmitter(mouseX,mouseY);
   
   // set_ps(selectedYear, "Sub-Saharan Africa", "Canada");
-  set_ps(selectedYear, destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText());
-  // ps.update();
-  // ps.display();
+  // set_ps(selectedYear, destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText());
+  ps.update();
+  ps.display();
 
   fill(255);
   textSize(16);
@@ -150,7 +156,7 @@ void printYearData(int year){
   
 }
 
-void set_ps(int year, String dest, String org){
+int set_ps(int year, String dest, String org){
   float n = 0;
 
   for(int i=0; i < migrations.size(); i++){
@@ -169,7 +175,7 @@ void set_ps(int year, String dest, String org){
       println(migrations.get(i).originCountry);
       println(migrations.get(i).destinationCountry);
 
-      n = (migrations.get(i).count) / 1000;
+      n = (migrations.get(i).count) / 10;
       if(n < 100){
         n = 100;
       }
@@ -180,11 +186,16 @@ void set_ps(int year, String dest, String org){
   }
 println("done");
   // set the number of particles based on the count
-  ps.reset();
-  ps.addParticles(int(n));
-  ps.setEmitter(mouseX, mouseY);
-  ps.update();
-  ps.display();
+
+  // SORT OF BROKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// ps = new ParticleSystem(int(n));
+  // ps.addParticles(int(n));
+  // ps.setEmitter(mouseX, mouseY);
+  // ps.update();
+  // ps.display();
  
+ return int(n);
 
 }
+
