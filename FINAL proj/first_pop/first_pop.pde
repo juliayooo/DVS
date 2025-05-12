@@ -1,7 +1,23 @@
 import controlP5.*;
+
+// global structures  
 ControlP5 cp5;
 ParticleSystem ps;
 PImage sprite;
+Slider yearSlider;
+ArrayList<ImCount> migrations = new ArrayList<ImCount>();
+ArrayList<String> regions = new ArrayList<String>();
+ArrayList<String> origins = new ArrayList<String>();
+DropdownList originDropdown;
+DropdownList destDropdown;
+
+// Global variables 
+String currOrg = "origin_select";
+String currDest = "region_select";
+int selectedYear = 1990;
+
+
+
 // define class for imcount structure 
 class ImCount {
   int year;
@@ -18,14 +34,6 @@ class ImCount {
   }
 }
 
-// global variables 
-Slider yearSlider;
-DropdownList originDropdown;
-DropdownList destDropdown;
-int selectedYear = 1990;
-ArrayList<ImCount> migrations = new ArrayList<ImCount>();
-ArrayList<String> regions = new ArrayList<String>();
-ArrayList<String> origins = new ArrayList<String>();
 
 void setup() {
   
@@ -48,10 +56,14 @@ void setup() {
   sprite = loadImage("sprite.png");
    //BROKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ps = new ParticleSystem(set_ps(selectedYear, "Sub-Saharan Africa", "Canada"));
-  println("created systmem with count" + set_ps(selectedYear, "Sub-Saharan Africa", "Canada"));
-  // ps = new ParticleSystem(100);
+
+  ps = new ParticleSystem(100);
+  println("created systmem with count 100");
+
+
+
   hint(DISABLE_DEPTH_MASK);
+
     
     
   }
@@ -94,6 +106,10 @@ void setup() {
 
 }
 void draw() {  
+
+  if (!destDropdown.getCaptionLabel().getText().equals(currDest) || !originDropdown.getCaptionLabel().getText().equals(currOrg) || int(yearSlider.getValue()) != selectedYear){
+    ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
+  }
   background(0);
   
   ps.setEmitter(mouseX,mouseY);
@@ -112,6 +128,7 @@ void draw() {
 // This function extracts data for a specific year column
 
 void loadYearData(Table table, String yearStr) {
+  
   for (TableRow row : table.rows()) {
 
     String dest = row.getString("Region, development group, country or area of destination");
@@ -157,6 +174,10 @@ void printYearData(int year){
 }
 
 int set_ps(int year, String dest, String org){
+
+  selectedYear = year;
+  currOrg = org;
+  currDest = dest;
   float n = 0;
 
   for(int i=0; i < migrations.size(); i++){
@@ -175,7 +196,7 @@ int set_ps(int year, String dest, String org){
       println(migrations.get(i).originCountry);
       println(migrations.get(i).destinationCountry);
 
-      n = (migrations.get(i).count) / 10;
+      n = (migrations.get(i).count) / 10000;
       if(n < 100){
         n = 100;
       }
