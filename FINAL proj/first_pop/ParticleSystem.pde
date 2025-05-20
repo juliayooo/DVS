@@ -15,8 +15,9 @@ class ParticleSystem {
       particles.add(p);
       particleShape.addChild(p.getShape());
     }
-    
+    // get the cube root of each particle system set. Grid width is 2* cube root and height is cube root. (creating a 2X1 ratio grid)
     double CR = Math.cbrt(n);
+    // round up
     gridH = (int)  Math.ceil(CR);
     gridW = 2*gridH;
     
@@ -24,23 +25,28 @@ class ParticleSystem {
 
   void update() {
     for (Particle p : particles) {
+      // PARTICLE update 
       p.update();
     }
   }
 
 void setEmitter(float x, float y) {
+  
+  // code for this function references this tutorial https://medium.com/@rh.h.rad/19-chaos-to-grid-generative-particle-animation-in-processing-7c44f9a0e023
   int index = 0;
   for (Particle p : particles) {
     int col = index % gridW;
     int row = index / gridW;
 
-    float cellX = map(col, 0, gridW - 1, 100, width - 100);
-    float cellY = map(row, 0, gridH - 1, 100, height - 100);
+    float cellX = map(col, 0, gridW - 1, 300, width - 100)- 100;
+    float cellY = map(row, 0, gridH - 1, 300, height - 200) - 250;
 
+              
     p.setTarget(cellX, cellY);
     index++;
   }
 }
+
   void addParticles(int n) {
 
  for (int i = 0; i < n; i++) {

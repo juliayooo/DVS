@@ -38,7 +38,7 @@ class ImCount {
 void setup() {
   
   // setup canvas 
-  size(1024, 768, P2D);
+  size(1500, 850, P2D);
   cp5 = new ControlP5(this);
   
   Table table = loadTable("data_edited1.csv", "header");
@@ -54,9 +54,7 @@ void setup() {
   
   // customizable image here 
   sprite = loadImage("sprite.png");
-   //BROKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+ 
   ps = new ParticleSystem(100);
   println("created systmem with count 100");
 
@@ -121,6 +119,8 @@ void draw() {
   fill(255);
   textSize(16);
   text("Frame rate: " + int(frameRate), 10, 20);
+  String count = Integer.toString((set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()) * 10000));
+  text("Each particle represents 10000 people. Migrant count: " + count, 10, 40 );
 }
 
 
@@ -199,7 +199,7 @@ int set_ps(int year, String dest, String org){
       if(n < 100){
         n = 100;
       }
-      text("count: " + Float.toString(n), 10, 40);
+      //text("count: " + Float.toString(n), 10, 40);
 
       break;
       }

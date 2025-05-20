@@ -61,37 +61,31 @@ void setTarget(float x, float y) {
      return false;
     } 
   }
-              void moveToTarget(PVector target) {
-              PVector desired = PVector.sub(target, position);
-              desired.mult(0.05);  // The strength/speed of movement
-            
-              velocity.add(desired);
-              velocity.limit(3); // Optional speed limit
-              position.add(velocity);
-              
-              getShape().resetMatrix();
-              getShape().translate(position.x, position.y);
-            }
-            
+  
+  
+  void moveToTarget(PVector target) {
+  PVector desired = PVector.sub(target, position);
+  desired.mult(0.05); 
 
-//  public void update() {
-//    lifespan = lifespan - 1;
-//    //velocity.add(gravity);
-    
-//    part.setTint(color(255,lifespan));
-//    part.translate(velocity.x, velocity.y);
-//  }
-//}
+  velocity.add(desired);
+  //velocity.limit(3); // Optional speed limit
+  //position.add(velocity);
+  
+  getShape().resetMatrix();
+  getShape().translate(position.x, position.y);
+}
+
 
 
 
 
 void update() {
   if (target != null) {
+    
     PVector desired = PVector.sub(target, position);
-    desired.mult(0.05);  // Movement strength
+    desired.mult(0.05); 
     velocity.add(desired);
-    velocity.limit(3);
+    velocity.limit(1);
     position.add(velocity);
 
     getShape().resetMatrix();
