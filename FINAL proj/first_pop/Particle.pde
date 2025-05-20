@@ -1,9 +1,11 @@
 class Particle {
-
+  PVector target;
   PVector velocity;
   float lifespan = 255;
   // PVector location;
-
+  PVector position;
+  PVector acceleration;
+  
   PShape part;
   float partSize;
   
@@ -24,28 +26,32 @@ class Particle {
     part.endShape();
     
     rebirth(width/2,height/2);
-    lifespan = random(255);
+    //lifespan = random(255);
   }
 
   PShape getShape() {
     return part;
   }
 
-//   float emitterX, emitterY;
 
-// void setEmitterPosition(float x, float y) {
-//   this.emitterX = x;
-//   this.emitterY = y;
-// }
+
+void setTarget(float x, float y) {
+  target = new PVector(x, y);
+}
+
   
   void rebirth(float x, float y) {
-    float a = random(TWO_PI);
-    float speed = random(0.5,4);
-    velocity = new PVector(cos(a), sin(a));
-    velocity.mult(speed);
-    lifespan = 255;   
-    part.resetMatrix();
-    part.translate(x, y); 
+    
+                              position = new PVector(x, y);
+                          velocity = new PVector(0, 0);
+                          target = null; 
+    //float a = random(TWO_PI);
+    //float speed = random(0.5,4);
+    //velocity = new PVector(cos(a), sin(a));
+    //velocity.mult(speed);
+    //lifespan = 255;   
+    //part.resetMatrix();
+    //part.translate(x, y); 
   }
   
   boolean isDead() {
@@ -55,13 +61,41 @@ class Particle {
      return false;
     } 
   }
-  
+              void moveToTarget(PVector target) {
+              PVector desired = PVector.sub(target, position);
+              desired.mult(0.05);  // The strength/speed of movement
+            
+              velocity.add(desired);
+              velocity.limit(3); // Optional speed limit
+              position.add(velocity);
+              
+              getShape().resetMatrix();
+              getShape().translate(position.x, position.y);
+            }
+            
 
-  public void update() {
-    lifespan = lifespan - 1;
-    velocity.add(gravity);
+//  public void update() {
+//    lifespan = lifespan - 1;
+//    //velocity.add(gravity);
     
-    part.setTint(color(255,lifespan));
-    part.translate(velocity.x, velocity.y);
+//    part.setTint(color(255,lifespan));
+//    part.translate(velocity.x, velocity.y);
+//  }
+//}
+
+
+
+
+void update() {
+  if (target != null) {
+    PVector desired = PVector.sub(target, position);
+    desired.mult(0.05);  // Movement strength
+    velocity.add(desired);
+    velocity.limit(3);
+    position.add(velocity);
+
+    getShape().resetMatrix();
+    getShape().translate(position.x, position.y);
   }
+}
 }

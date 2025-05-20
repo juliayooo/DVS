@@ -114,8 +114,7 @@ void draw() {
   
   ps.setEmitter(mouseX,mouseY);
   
-  // set_ps(selectedYear, "Sub-Saharan Africa", "Canada");
-  // set_ps(selectedYear, destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText());
+  
   ps.update();
   ps.display();
 
@@ -206,17 +205,8 @@ int set_ps(int year, String dest, String org){
       }
   }
 println("done");
-  // set the number of particles based on the count
-
-  // SORT OF BROKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// ps = new ParticleSystem(int(n));
-  // ps.addParticles(int(n));
-  // ps.setEmitter(mouseX, mouseY);
-  // ps.update();
-  // ps.display();
+ 
  
  return int(n);
 
 }
-
