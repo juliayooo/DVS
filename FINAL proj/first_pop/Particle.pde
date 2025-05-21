@@ -78,7 +78,6 @@ void setTarget(float x, float y) {
 
 
 
-
 void update() {
   if (target != null) {
     
@@ -92,4 +91,18 @@ void update() {
     getShape().translate(position.x, position.y);
   }
 }
+
+
+
+void returnCenter(PVector center) {
+  PVector desired = PVector.sub(center, target);
+  desired.mult(0.05); 
+  velocity.add(desired);
+  velocity.limit(1);
+  position.add(velocity);
+
+  getShape().resetMatrix();
+  getShape().translate(position.x, position.y);
+}
+
 }

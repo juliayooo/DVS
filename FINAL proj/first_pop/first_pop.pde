@@ -38,7 +38,8 @@ class ImCount {
 void setup() {
   
   // setup canvas 
-  size(1500, 850, P2D);
+  //size(1500, 850, P2D);
+  fullScreen(P2D);
   cp5 = new ControlP5(this);
   
   Table table = loadTable("data_edited1.csv", "header");
@@ -49,6 +50,10 @@ void setup() {
     String yearStr = Integer.toString(i);  
   loadYearData(table, yearStr); 
 
+    
+  }
+  
+  
   // code referenced from daniel shiffman's particle system
   orientation(LANDSCAPE);
   
@@ -62,14 +67,11 @@ void setup() {
 
   hint(DISABLE_DEPTH_MASK);
 
-    
-    
-  }
 
  
   // initialize dropdowns with lists 
-  destDropdown = cp5.addDropdownList("region_select").setPosition(100, 100);
-  originDropdown = cp5.addDropdownList("origin_select").setPosition(500, 100);
+  destDropdown = cp5.addDropdownList("region_select").setPosition(500, 100);
+  originDropdown = cp5.addDropdownList("origin_select").setPosition(100,100);
 
    
 
@@ -87,8 +89,8 @@ void setup() {
   
   // initialize year slider 
   yearSlider = cp5.addSlider("Year")
-  .setPosition(100, 500)
-  .setSize(200, 20)
+  .setPosition(50, 800)
+  .setSize(400, 40)
   .setRange(1990, 2020)
   .setNumberOfTickMarks(7)  // 1990, 1995, ..., 2020
   .setValue(selectedYear)
@@ -106,6 +108,10 @@ void setup() {
 void draw() {  
 
   if (!destDropdown.getCaptionLabel().getText().equals(currDest) || !originDropdown.getCaptionLabel().getText().equals(currOrg) || int(yearSlider.getValue()) != selectedYear){
+    
+    //ps.returnP();
+    //ps.update();
+    //ps.display();
     ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
   }
   background(0);
@@ -117,9 +123,18 @@ void draw() {
   ps.display();
 
   fill(255);
-  textSize(16);
+  textSize(20);
   text("Frame rate: " + int(frameRate), 10, 20);
-  String count = Integer.toString((set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()) * 10000));
+  String count;
+  int x = (set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()) * 10000);
+  if(x == 10000){
+    count = "no data, or <10,000.";
+  }
+  else{
+    count = Integer.toString(x);
+  }
+  
+  
   text("Each particle represents 10000 people. Migrant count: " + count, 10, 40 );
 }
 
@@ -196,8 +211,8 @@ int set_ps(int year, String dest, String org){
       println(migrations.get(i).destinationCountry);
 
       n = (migrations.get(i).count) / 10000;
-      if(n < 100){
-        n = 100;
+      if(n < 1){
+        n = 1;
       }
       //text("count: " + Float.toString(n), 10, 40);
 

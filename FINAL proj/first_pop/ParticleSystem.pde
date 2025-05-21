@@ -8,8 +8,8 @@ class ParticleSystem {
   ParticleSystem(int n) {
     particles = new ArrayList<Particle>();
     particleShape = createShape(PShape.GROUP);
-    
-    
+
+
     for (int i = 0; i < n; i++) {
       Particle p = new Particle();
       particles.add(p);
@@ -20,52 +20,50 @@ class ParticleSystem {
     // round up
     gridH = (int)  Math.ceil(CR);
     gridW = 2*gridH;
-    
   }
 
   void update() {
     for (Particle p : particles) {
-      // PARTICLE update 
+      // PARTICLE update
       p.update();
     }
   }
 
-void setEmitter(float x, float y) {
-  
-  // code for this function references this tutorial https://medium.com/@rh.h.rad/19-chaos-to-grid-generative-particle-animation-in-processing-7c44f9a0e023
-  int index = 0;
-  for (Particle p : particles) {
-    int col = index % gridW;
-    int row = index / gridW;
+  void setEmitter(float x, float y) {
 
-    float cellX = map(col, 0, gridW - 1, 300, width - 100)- 100;
-    float cellY = map(row, 0, gridH - 1, 300, height - 200) - 250;
+    // code for this function references this tutorial
+    // https://medium.com/@rh.h.rad/19-chaos-to-grid-generative-particle-animation-in-processing-7c44f9a0e023
+    int index = 0;
+    for (Particle p : particles) {
+      int col = index % gridW;
+      int row = index / gridW;
 
-              
-    p.setTarget(cellX, cellY);
-    index++;
+      float cellX = map(col, 0, gridW - 1, 200, width - 100)- 300;
+      float cellY = map(row, 0, gridH - 1, 200, height - 200) - 300;
+
+
+      p.setTarget(cellY, cellX);
+      index++;
+    }
   }
-}
 
   void addParticles(int n) {
 
- for (int i = 0; i < n; i++) {
-    Particle p = new Particle();
-    p.rebirth(mouseX, mouseY);  // Set initial position
-    particles.add(p);
-    particleShape.addChild(p.getShape());
-  }
-  println("added " + n + " particles");
-
-
+    for (int i = 0; i < n; i++) {
+      Particle p = new Particle();
+      p.rebirth(mouseX, mouseY);  // Set initial position
+      particles.add(p);
+      particleShape.addChild(p.getShape());
+    }
+    println("added " + n + " particles");
   }
 
 
   //helper func to clear particles
   void reset() {
-   println("resetting particles");
-  particles.clear();
-  particleShape = createShape(PShape.GROUP);  // Clear old shape group
+    //println("resetting particles");
+    //particles.clear();
+    //particleShape = createShape(PShape.GROUP);  // Clear old shape group
   }
 
 
@@ -73,4 +71,15 @@ void setEmitter(float x, float y) {
 
     shape(particleShape);
   }
+  
+  
+  void returnP() {
+  PVector center = new PVector(width / 2, height / 2);
+  for (Particle p : particles) {
+    p.returnCenter(center);
+  }
+}
+
+
+
 }
