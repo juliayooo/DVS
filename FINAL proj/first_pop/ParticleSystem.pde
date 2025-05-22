@@ -2,7 +2,6 @@ class ParticleSystem {
   ArrayList<Particle> particles;
   int gridH;
   int gridW;
-
   PShape particleShape;
 
   ParticleSystem(int n) {
@@ -38,8 +37,8 @@ class ParticleSystem {
       int col = index % gridW;
       int row = index / gridW;
 
-      float cellX = map(col, 0, gridW - 1, 200, width - 100)- 300;
-      float cellY = map(row, 0, gridH - 1, 200, height - 200) - 300;
+      float cellX = map(col, 0, gridW - 1, 200, width - 100)- 100;
+      float cellY = map(row, 0, gridH - 1, 200, height - 100) - 100;
 
 
       p.setTarget(cellY, cellX);
@@ -73,13 +72,12 @@ class ParticleSystem {
   }
   
   
-  void returnP() {
-  PVector center = new PVector(width / 2, height / 2);
-  for (Particle p : particles) {
-    p.returnCenter(center);
-  }
+
+
+void centerTarget(float x, float y){
+ for (Particle p : particles) {
+     p.setTarget(x, y);
+ }
 }
-
-
 
 }

@@ -3,6 +3,7 @@ import controlP5.*;
 // global structures  
 ControlP5 cp5;
 ParticleSystem ps;
+boolean emit = true;
 PImage sprite;
 Slider yearSlider;
 ArrayList<ImCount> migrations = new ArrayList<ImCount>();
@@ -10,6 +11,8 @@ ArrayList<String> regions = new ArrayList<String>();
 ArrayList<String> origins = new ArrayList<String>();
 DropdownList originDropdown;
 DropdownList destDropdown;
+float zoomFactor = 1.0; // Initial zoom level
+
 
 // Global variables 
 String currOrg = "origin_select";
@@ -40,6 +43,7 @@ void setup() {
   // setup canvas 
   //size(1500, 850, P2D);
   fullScreen(P2D);
+  smooth();
   cp5 = new ControlP5(this);
   
   Table table = loadTable("data_edited1.csv", "header");
@@ -107,6 +111,14 @@ void setup() {
 }
 void draw() {  
 
+  
+  // Zoom elements
+  pushMatrix();
+  translate(width / 2, height / 2);
+  scale(zoomFactor);
+  translate(-width / 2, -height / 2); 
+
+
   if (!destDropdown.getCaptionLabel().getText().equals(currDest) || !originDropdown.getCaptionLabel().getText().equals(currOrg) || int(yearSlider.getValue()) != selectedYear){
     
     //ps.returnP();
@@ -115,13 +127,18 @@ void draw() {
     ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
   }
   background(0);
-  
-  ps.setEmitter(mouseX,mouseY);
+  if(emit){
+      ps.setEmitter(mouseX,mouseY);
+
+  }
+ 
   
   
   ps.update();
   ps.display();
-
+  // ZOOM HANDLED
+  popMatrix();
+  // GUI RULES
   fill(255);
   textSize(20);
   text("Frame rate: " + int(frameRate), 10, 20);
@@ -136,6 +153,7 @@ void draw() {
   
   
   text("Each particle represents 10000 people. Migrant count: " + count, 10, 40 );
+  
 }
 
 
@@ -224,4 +242,28 @@ println("done");
  
  return int(n);
 
+}
+
+
+void mouseClicked(){
+  
+  if(emit){
+      emit = false;
+
+  }
+  else{
+    emit= true;
+  }
+
+  ps.centerTarget(mouseX, mouseY);
+  ps.update();
+  
+}
+
+
+void mouseWheel(MouseEvent event) {
+// scroll controls zoom 
+  
+  float delta = event.getCount() > 0 ? 1.05 : 1.0/1.03; // Adjust zoom factor
+  zoomFactor *= delta;
 }

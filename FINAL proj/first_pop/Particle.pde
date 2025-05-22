@@ -84,25 +84,18 @@ void update() {
     PVector desired = PVector.sub(target, position);
     desired.mult(0.05); 
     velocity.add(desired);
-    velocity.limit(1);
+    velocity.limit(2);
     position.add(velocity);
 
     getShape().resetMatrix();
     getShape().translate(position.x, position.y);
+    
+    
   }
+  
 }
 
 
 
-void returnCenter(PVector center) {
-  PVector desired = PVector.sub(center, target);
-  desired.mult(0.05); 
-  velocity.add(desired);
-  velocity.limit(1);
-  position.add(velocity);
-
-  getShape().resetMatrix();
-  getShape().translate(position.x, position.y);
-}
 
 }
