@@ -65,7 +65,7 @@ class ParticleSystem {
     //particleShape = createShape(PShape.GROUP);  // Clear old shape group
   }
 
-
+  
   void display() {
 
     shape(particleShape);
