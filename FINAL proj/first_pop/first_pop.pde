@@ -83,11 +83,14 @@ void setup() {
   destDropdown.setBarHeight(20);
   destDropdown.setHeight(200);
   destDropdown.setWidth(300);
+  destDropdown.setBackgroundColor(0);
 
   originDropdown.setItemHeight(20);
   originDropdown.setBarHeight(20);
   originDropdown.setHeight(200);
   originDropdown.setWidth(300);
+  originDropdown.setBackgroundColor(255);
+
 
 
   
@@ -126,7 +129,7 @@ void draw() {
     //ps.display();
     ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
   }
-  background(0);
+  background(115, 172, 191);
   if(emit){
       ps.setEmitter(mouseX,mouseY);
 
