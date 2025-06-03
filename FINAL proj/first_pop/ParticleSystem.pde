@@ -37,8 +37,8 @@ class ParticleSystem {
       int col = index % gridW;
       int row = index / gridW;
 
-      float cellX = map(col, 0, gridW - 1, 200, width - 100)- 100;
-      float cellY = map(row, 0, gridH - 1, 200, height - 100) - 100;
+      float cellX = map(col, 0, gridW - 1, 200, width);
+      float cellY = map(row, 0, gridH - 1, 200, height);
 
 
       p.setTarget(cellY, cellX);

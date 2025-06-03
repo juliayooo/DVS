@@ -45,7 +45,10 @@ void setup() {
   fullScreen(P2D);
   smooth();
   cp5 = new ControlP5(this);
-  
+  PFont nabla;
+  nabla = createFont("nabla.ttf", 40);
+  textFont(nabla);
+  fill(255, 255, 230);
   Table table = loadTable("data_edited1.csv", "header");
   
  
@@ -74,8 +77,8 @@ void setup() {
 
  
   // initialize dropdowns with lists 
-  destDropdown = cp5.addDropdownList("region_select").setPosition(500, 100);
-  originDropdown = cp5.addDropdownList("origin_select").setPosition(100,100);
+  destDropdown = cp5.addDropdownList("region_select").setPosition(400, 50);
+  originDropdown = cp5.addDropdownList("origin_select").setPosition(50,50);
 
    
 
@@ -96,7 +99,7 @@ void setup() {
   
   // initialize year slider 
   yearSlider = cp5.addSlider("Year")
-  .setPosition(50, 800)
+  .setPosition(750, 50)
   .setSize(400, 40)
   .setRange(1990, 2020)
   .setNumberOfTickMarks(7)  // 1990, 1995, ..., 2020
@@ -129,7 +132,7 @@ void draw() {
     //ps.display();
     ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
   }
-  background(115, 172, 191);
+  background(0, 77, 102);
   if(emit){
       ps.setEmitter(mouseX,mouseY);
 
@@ -143,8 +146,7 @@ void draw() {
   popMatrix();
   // GUI RULES
   fill(255);
-  textSize(20);
-  text("Frame rate: " + int(frameRate), 10, 20);
+  textSize(27);
   String count;
   int x = (set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()) * 10000);
   if(x == 10000){
@@ -154,9 +156,14 @@ void draw() {
     count = Integer.toString(x);
   }
   
-  
-  text("Each particle represents 10000 people. Migrant count: " + count, 10, 40 );
-  
+  if(destDropdown.getCaptionLabel().getText() != "region_select" && originDropdown.getCaptionLabel().getText() != "origin_select"){
+  text("Each particle represents 10000 people. \n Migrant count: ~" + count + " moving from " + originDropdown.getCaptionLabel().getText() 
+  + " to " + destDropdown.getCaptionLabel().getText() + "\n between " + int (yearSlider.getValue()) 
+  + " and " + (int (yearSlider.getValue())+4) , 10, 850);
+  }
+  else{
+    text("Select an origin and destination", 10, 850);
+  }
 }
 
 
