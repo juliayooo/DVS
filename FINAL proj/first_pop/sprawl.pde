@@ -77,34 +77,42 @@ void setup() {
 
  
   // initialize dropdowns with lists 
-  destDropdown = cp5.addDropdownList("region_select").setPosition(400, 50);
-  originDropdown = cp5.addDropdownList("origin_select").setPosition(50,50);
+  destDropdown = cp5.addDropdownList("Select a Destination").setPosition(500, 50);
+  originDropdown = cp5.addDropdownList("Select an Origin").setPosition(50,50);
 
    
 
   destDropdown.setItemHeight(20);
   destDropdown.setBarHeight(20);
-  destDropdown.setHeight(200);
-  destDropdown.setWidth(300);
-  destDropdown.setBackgroundColor(0);
-
+  destDropdown.setHeight(300);
+  destDropdown.setWidth(400);
+  destDropdown.setColorBackground(color(0, 57, 77));  // dropdown background
+  destDropdown.setColorActive(color(179, 236, 255));   // highlighted item
+  destDropdown.setColorForeground(color(0,0,0));  // hover color
+  //destDropdown.setFont(nabla);
+  
   originDropdown.setItemHeight(20);
   originDropdown.setBarHeight(20);
-  originDropdown.setHeight(200);
-  originDropdown.setWidth(300);
+  originDropdown.setHeight(300);
+  originDropdown.setWidth(400);
   originDropdown.setBackgroundColor(255);
+  originDropdown.setColorBackground(color(0, 57, 77));  // dropdown background
+  originDropdown.setColorActive(color(179, 236, 255));   // highlighted item
+  originDropdown.setColorForeground(color(0,0,0));  // hover color
 
 
 
   
   // initialize year slider 
   yearSlider = cp5.addSlider("Year")
-  .setPosition(750, 50)
+  .setPosition(950, 50)
   .setSize(400, 40)
   .setRange(1990, 2020)
   .setNumberOfTickMarks(7)  // 1990, 1995, ..., 2020
   .setValue(selectedYear)
+  .setColorBackground(color(0, 57, 77))
   .setSliderMode(Slider.FLEXIBLE);
+  
 
 //populate dropdowns
   for(int i = 0; i < 8; i++){
@@ -126,10 +134,7 @@ void draw() {
 
 
   if (!destDropdown.getCaptionLabel().getText().equals(currDest) || !originDropdown.getCaptionLabel().getText().equals(currOrg) || int(yearSlider.getValue()) != selectedYear){
-    
-    //ps.returnP();
-    //ps.update();
-    //ps.display();
+
     ps = new ParticleSystem(set_ps(int(yearSlider.getValue()), destDropdown.getCaptionLabel().getText(), originDropdown.getCaptionLabel().getText()));
   }
   background(0, 77, 102);
@@ -157,8 +162,8 @@ void draw() {
   }
   
   if(destDropdown.getCaptionLabel().getText() != "region_select" && originDropdown.getCaptionLabel().getText() != "origin_select"){
-  text("Each particle represents 10000 people. \n Migrant count: ~" + count + " moving from " + originDropdown.getCaptionLabel().getText() 
-  + " to " + destDropdown.getCaptionLabel().getText() + "\n between " + int (yearSlider.getValue()) 
+  text("Each particle represents 10000 people. Click to expand or collapse, and scroll to zoom. \n Migrant count: ~" + count + " people from " + originDropdown.getCaptionLabel().getText() 
+  + " living in " + destDropdown.getCaptionLabel().getText() + "\n between " + int (yearSlider.getValue()) 
   + " and " + (int (yearSlider.getValue())+4) , 10, 850);
   }
   else{
